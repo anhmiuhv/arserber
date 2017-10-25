@@ -33,7 +33,6 @@ webserver :: IO ()
 webserver = do
     manager <- newManager tlsManagerSettings
     port <- read <$> getEnv "PORT"
-
     scotty port $ do
         get "/" $ do
             text "server is active"
@@ -58,16 +57,24 @@ makeRequest manager url = do
         let body = responseBody response
         body $$+- sinkDoc
 
-getParagraph :: Document -> Maybe Text
-getParagraph document = listToMaybe contents where
+getParagraph :: Document -> Text
+getParagraph document =  T.unwords contents where
     contents = cursor
         $// element "p"
         &// content
     cursor = fromDocument document
 
 
-getFiveBest :: Maybe Text -> [Text]
-getFiveBest text = maybe [] analyse text where
+getAllParagraph :: Document ->  [Text]
+getAllParagraph document = contents where
+    contents = cursor
+        $// element "p"
+        &// content
+    cursor = fromDocument document
+
+
+getFiveBest :: Text -> [Text]
+getFiveBest text = analyse text where
     analyse t = map fst $ take 5 $ RAKE.sortByScore $ RAKE.keywords t 
 
 
