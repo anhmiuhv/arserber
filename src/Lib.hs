@@ -11,6 +11,7 @@ import Control.Monad
 import Web.Scotty
 import Data.Aeson (FromJSON, ToJSON)
 import GHC.Generics
+import System.Environment (getEnv)
 import Control.Monad.Trans.Resource (runResourceT)
 import Data.Conduit (($$+-))
 import Network.HTTP.Conduit (tlsManagerSettings, http, newManager, parseRequest, responseBody, Manager)
