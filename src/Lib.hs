@@ -31,7 +31,9 @@ instance FromJSON Keywords
 webserver :: IO ()
 webserver = do
     manager <- newManager tlsManagerSettings
-    scotty 3000 $ do
+    port <- read <$> getEnv "PORT"
+
+    scotty port $ do
         get "/" $ do
             text "server is active"
         get "/url" $ do
